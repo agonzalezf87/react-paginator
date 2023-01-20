@@ -2,84 +2,82 @@ import { useEffect, useState } from "react"
 import products from '../helpers/products.json'
 
 const App = () => {
-  const [start, setStart] = useState(0)
-  const [offset, setOffset] = useState(5)
-  const [current, setCurrent] = useState(1)
+  let startPage = 1
+  const [currentPage, setCurrentPage] = useState(1)
+  const dataOffset = 15
+  const pages = Math.ceil(products.length / dataOffset) 
+  const pagOffset = 5
 
-  useEffect(() => {
-    console.log(current)
-  },[current])
+  const pagesArray = []
+  
+  for (let i = 1; i <= pages; i++) {
+    pagesArray.push(i)
+  }
 
   const paginate = () => {
-    let pagStart = start,
-        mainArray = [],
-        result = []
-    ;
+    if (currentPage > pagOffset) startPage = (currentPage - 3)
 
-    if (current > offset) pagStart = current - 3
-
-    for (let i = 0; i < products.length; i++) {
-      mainArray.push(i+1)
-    }
-
-    result = Array.from([...mainArray].splice(pagStart, offset))
-
-    return result
+    return (startPage === 1) ? Array.from([...pagesArray].splice(0, pagOffset)) : Array.from([...pagesArray].splice(startPage, pagOffset))
   }
 
   var paginator = paginate()
 
-  const handleNext = (ev) => {
+  const handleNextPag = (ev) => {
     ev.preventDefault()
-    current != products.length ? setCurrent(current + 1) : setCurrent(products.length)
-    if (current != products.length) paginator = paginate()
+    currentPage != pages ? setCurrentPage(currentPage + 1) : null
+    if (currentPage != pages) paginator = paginate()
   }
   
-  const handlePrev = (ev) => {
+  const handlePrevPag = (ev) => {
     ev.preventDefault()
-    current != 1 ? setCurrent(current - 1) : setCurrent(start)
-    if (current != start) paginator = paginate()
+    currentPage === 1 ? null : setCurrentPage(currentPage - 1)
+    if (currentPage != startPage) paginator = paginate()
   }
 
-  const handleCurrent = (ev) => {
+  const handleCurrentPage = (ev) => {
     ev.preventDefault()
-    setCurrent(parseInt(ev.target.firstChild.data))
+    const keyVal = ev.target.firstChild.data
+    keyVal === 'First' 
+      ? setCurrentPage(1) 
+      : keyVal === 'Last' 
+      ? setCurrentPage(pages) 
+      : parseInt(keyVal) != currentPage 
+      ? setCurrentPage(parseInt(keyVal))
+      : null
   }
 
   return (
     <>
       <div className="w-screen h-screen">
         <h1 className="w-full text-2xl text-center text-gray-800 font-bold p-4 mb-8">React.JS Paginator</h1>
-        <ul className="w-full h-fit flex justify-center items-center gap-x-2 text-lg flex-wrap">
+        <div className="w-full h-auto my-4 px-12">
+          <p className="text-center">Number of products: <span className="text-lg font-bold">{products.length}</span></p>
+          <p className="text-center">Showing <span className="text-lg font-bold">{dataOffset}</span> products per page</p>
+          <p className="text-center">Showing <span className="text-lg font-bold">{pages}</span> pages of products</p>
+        </div>
+        <ul className="w-full h-fit flex justify-center items-center gap-x-2 text-lg flex-wrap select-none mt-12">
           <li><a
-            className={`hover:underline ${current === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} 
+            className={`hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} 
             href="#" 
-            onClick={handlePrev} 
+            onClick={handlePrevPag} 
           >Prev</a></li>
-          {products.length > offset && current > offset &&
-            <li className="text-gray-500 select-none">...</li>
-          }
+          <li><a className={`hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} href="#" onClick={handleCurrentPage}>First</a></li>
           {paginator.map(item => (
-            products.length > offset
+            pages > pagOffset
               ?
-                <li key={item}><a className={`hover:underline ${item === current && 'font-bold underline'}`} href="#" onClick={handleCurrent}>{
-                  item < 10 ? ` ${item}` : item
-                  }</a></li>
+                <li key={item}><a className={`hover:underline ${item === currentPage && 'font-bold underline'}`} href="#" onClick={handleCurrentPage}>{item}</a></li>
               :
-                <li key={item}><a className={`hover:underline ${item === current && 'font-bold underline'}`} href="#" onClick={handleCurrent}>{
-                  item < 10 ? ` ${item}` : item
-                  }</a></li>
+                <li key={item}><a className={`hover:underline ${item === currentPage && 'font-bold underline'}`} href="#" onClick={handleCurrentPage}>{item}</a></li>
           ))}
-          {products.length > offset && (products.length-current) > 3 &&
+          {pages > pagOffset &&
             <>
-              <li className="text-gray-500 select-none">...</li>
-              <li><a className={`hover:underline ${products.length === current && 'font-bold underline'}`} href="#" onClick={handleCurrent}>{products.length}</a></li>
+              <li><a className={`hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} href="#" onClick={handleCurrentPage}>Last</a></li>
             </>
           }
           <li><a 
-            className={`hover:underline ${current === products.length && 'cursor-default text-gray-400 hover:no-underline'}`} 
+            className={`hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} 
             href="#" 
-            onClick={handleNext} 
+            onClick={handleNextPag} 
           >Next</a></li>
         </ul>
       </div>
