@@ -5,7 +5,7 @@ import products from '../helpers/products.json'
 const App = () => {
   let startPage = 1
   const [currentPage, setCurrentPage] = useState(1)
-  const dataOffset = 15
+  const dataOffset = 10
   const pages = Math.ceil(products.length / dataOffset) 
   const pagOffset = 5
 
@@ -61,14 +61,14 @@ const App = () => {
           <p className="text-center">Showing <span className="text-lg font-bold">{dataOffset}</span> products per page</p>
           <p className="text-center">Showing <span className="text-lg font-bold">{pages}</span> pages of products</p>
         </div>
-        <ul className="w-full h-fit flex justify-center items-center gap-x-1 text-lg select-none mt-12">
-          <li className="bg-gray-200 rounded-md border border-gray-400 flex items-center py-1"><a
-            className={`inline-block w-full h-full hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} 
+        <ul className="w-full h-fit flex justify-center items-center text-lg select-none mt-12">
+          <li className="bg-gray-200 border border-gray-400 hover:bg-gray-400 flex items-center h-12 rounded-l-lg"><a
+            className={`inline-flex justify-center items-center w-full h-full hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} 
             href="#" 
             onClick={handlePrevPag} 
           ><MdChevronLeft style={{ height: '24px', width: '24px' }} /></a></li>
-          <li className="bg-gray-200 rounded-md border border-gray-400 flex items-center py-1"><a 
-            className={`inline-block w-full h-full hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} 
+          <li className="bg-gray-200 border border-gray-400 hover:bg-gray-400 flex items-center h-12"><a 
+            className={`inline-flex justify-center items-center w-full h-full hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} 
             href="#" 
             id="first"
             onClick={handleFirstPage}
@@ -76,22 +76,22 @@ const App = () => {
           {paginator.map(item => (
             pages > pagOffset
               ?
-                <li key={item} className="bg-gray-200 rounded-md border border-gray-400 text-base w-8 py-1 text-center"><a className={`inline-block w-full h-full hover:underline ${item === currentPage && 'font-bold'}`} href="#" onClick={handleCurrentPage}>{item}</a></li>
+                <li key={item} className="bg-gray-200 border border-gray-400 hover:bg-gray-400 text-lg w-8 h-12 text-center"><a className={`inline-flex justify-center items-center w-full h-full ${item === currentPage && 'font-bold'}`} href="#" onClick={handleCurrentPage}>{item}</a></li>
               :
-                <li key={item} className="bg-gray-200 rounded-md border border-gray-400 text-base w-8 py-1 text-center"><a className={`inline-block w-full h-full hover:underline ${item === currentPage && 'font-bold'}`} href="#" onClick={handleCurrentPage}>{item}</a></li>
+                <li key={item} className="bg-gray-200 border border-gray-400 hover:bg-gray-400 text-lg w-8 h-12 text-center"><a className={`inline-flex justify-center items-center w-full h-full ${item === currentPage && 'font-bold'}`} href="#" onClick={handleCurrentPage}>{item}</a></li>
           ))}
           {pages > pagOffset &&
             <>
-              <li className="bg-gray-200 rounded-md border border-gray-400 flex items-center py-1"><a 
-              className={`inline-block w-full h-full hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} 
+              <li className="bg-gray-200 border border-gray-400 hover:bg-gray-400 flex items-center h-12"><a 
+              className={`inline-flex justify-center items-center w-full h-full hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} 
               href="#" 
               id="last"
               onClick={handleLastPage}
             ><MdLastPage style={{ height: '24px', width: '24px' }} /></a></li>
             </>
           }
-          <li className="bg-gray-200 rounded-md border border-gray-400 flex items-center py-1"><a 
-            className={`inline-block w-full h-full hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} 
+          <li className="bg-gray-200 border border-gray-400 hover:bg-gray-400 flex items-center h-12 rounded-r-lg"><a 
+            className={`inline-flex justify-center items-center w-full h-full hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} 
             href="#" 
             onClick={handleNextPag} 
           ><MdChevronRight style={{ height: '24px', width: '24px' }} /></a></li>
