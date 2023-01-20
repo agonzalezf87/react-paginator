@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { MdChevronLeft, MdChevronRight, MdFirstPage, MdLastPage } from 'react-icons/md'
 import products from '../helpers/products.json'
 
 const App = () => {
@@ -36,14 +37,20 @@ const App = () => {
 
   const handleCurrentPage = (ev) => {
     ev.preventDefault()
-    const keyVal = ev.target.firstChild.data
-    keyVal === 'First' 
+    const keyVal = ev.target.id === 'first' 
+      ? 'first' 
+      : ev.target.id === 'last' 
+      ? 'last' : ev.target.firstChild.data
+    ;
+
+    keyVal === 'first' 
       ? setCurrentPage(1) 
-      : keyVal === 'Last' 
+      : keyVal === 'last' 
       ? setCurrentPage(pages) 
       : parseInt(keyVal) != currentPage 
       ? setCurrentPage(parseInt(keyVal))
       : null
+    ;
   }
 
   return (
@@ -60,8 +67,12 @@ const App = () => {
             className={`hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} 
             href="#" 
             onClick={handlePrevPag} 
-          >Prev</a></li>
-          <li><a className={`hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} href="#" onClick={handleCurrentPage}>First</a></li>
+          ><MdChevronLeft/></a></li>
+          <li><a 
+            className={`hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} 
+            id="first"
+            href="#" 
+          ><MdFirstPage id="first" onClick={handleCurrentPage}/></a></li>
           {paginator.map(item => (
             pages > pagOffset
               ?
@@ -71,14 +82,17 @@ const App = () => {
           ))}
           {pages > pagOffset &&
             <>
-              <li><a className={`hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} href="#" onClick={handleCurrentPage}>Last</a></li>
+              <li><a 
+              className={`hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} 
+              href="#" 
+            ><MdLastPage id="last" onClick={handleCurrentPage}/></a></li>
             </>
           }
           <li><a 
             className={`hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} 
             href="#" 
             onClick={handleNextPag} 
-          >Next</a></li>
+          ><MdChevronRight/></a></li>
         </ul>
       </div>
     </>
