@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { MdChevronLeft, MdChevronRight, MdFirstPage, MdLastPage } from 'react-icons/md'
 import products from '../helpers/products.json'
 
@@ -58,10 +58,10 @@ const App = () => {
       <div className="w-4/5 h-screen m-auto">
         <h1 className="w-full text-2xl text-center text-gray-800 font-bold p-4 mb-8 ease-in-out transition-all duration-300">React.JS Paginator</h1>
         <div className="w-full h-12 flex justify-between items-center border-t border-indigo-300 pt-4 px-4">
-          <div className="w-1/2 md:w-1/4 h-full flex items-center text-gray-600">
-            <p className="hidden sm:block text-sm"><span className="font-semibold">{currentPage > 1 ? ((dataOffset * currentPage) - dataOffset) + 1 : currentPage}</span> to <span className="font-semibold">{currentPage < pages ? currentPage * dataOffset : data}</span> items of <span className="font-semibold">{data}</span></p>
+          <div className="w-1/2 lg:w-1/4 h-full flex items-center text-gray-600">
+            <p className="sm:block text-sm text-center mx-auto"><span className="font-semibold">{currentPage > 1 ? ((dataOffset * currentPage) - dataOffset) + 1 : currentPage}</span> to <span className="font-semibold">{currentPage < pages ? currentPage * dataOffset : data}</span><span className="hidden sm:inline"> items of </span><span className="font-semibold hidden sm:inline">{data}</span></p>
           </div>
-          <div className="w-1/2 md:w-2/4">
+          <div className="w-1/2 lg:w-2/4">
             <ul className="w-full h-fit flex justify-end items-center select-none text-blue-900 font-medium">
               <li className="flex items-center w-6 sm:w-8 h-10 bg-zync-100">
                 <a
