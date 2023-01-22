@@ -8,6 +8,7 @@ const App = () => {
   const dataOffset = 10
   const pages = Math.ceil(products.length / dataOffset) 
   const pagOffset = 5
+  const data = products.length
 
   const pagesArray = []
   
@@ -54,48 +55,58 @@ const App = () => {
 
   return (
     <>
-      <div className="w-screen h-screen">
+      <div className="w-4/5 h-screen m-auto">
         <h1 className="w-full text-2xl text-center text-gray-800 font-bold p-4 mb-8 ease-in-out transition-all duration-300">React.JS Paginator</h1>
-        <div className="w-full h-auto my-4 px-12">
-          <p className="text-center">Number of products: <span className="text-lg font-bold">{products.length}</span></p>
-          <p className="text-center">Showing <span className="text-lg font-bold">{dataOffset}</span> products per page</p>
-          <p className="text-center">Showing <span className="text-lg font-bold">{pages}</span> pages of products</p>
+        <div className="w-full h-12 flex justify-between items-center border-t border-indigo-300 pt-4 px-4">
+          <div className="w-1/2 md:w-1/4 h-full flex items-center text-gray-600">
+            <p className="hidden sm:block text-sm"><span className="font-semibold">{currentPage > 1 ? ((dataOffset * currentPage) - dataOffset) + 1 : currentPage}</span> to <span className="font-semibold">{currentPage < pages ? currentPage * dataOffset : data}</span> items of <span className="font-semibold">{data}</span></p>
+          </div>
+          <div className="w-1/2 md:w-2/4">
+            <ul className="w-full h-fit flex justify-end items-center select-none text-blue-900 font-medium">
+              <li className="flex items-center w-6 sm:w-8 h-10 bg-zync-100">
+                <a
+                  className={`inline-flex justify-center items-center w-full h-full ${currentPage === 1 ? 'cursor-default text-indigo-200' : ''}`} 
+                  href="#" 
+                  onClick={handlePrevPag} 
+                  ><MdChevronLeft className="w-6 h-6"/>
+                </a>
+              </li>
+              <li className="flex items-center w-6 sm:w-8 h-10 bg-zync-100">
+                <a 
+                  className={`inline-flex justify-center items-center w-full h-full ${currentPage === 1 ? 'cursor-default text-indigo-200' : ''}`} 
+                  href="#" 
+                  id="first"
+                  onClick={handleFirstPage}
+                ><MdFirstPage className="w-6 h-6"/></a>
+              </li>
+              {paginator.map(item => (
+                pages > pagOffset
+                  ?
+                    <li key={item} className={`hidden sm:flex items-center w-8 h-10 text-center bg-zync-100 ${item === currentPage ? 'border-b-2 border-indigo-700' : ''}`}><a className={`inline-flex justify-center items-center w-full h-full`} href="#" onClick={handleCurrentPage}><span className={`inline-flex text-lg leading-none ${item === currentPage ? 'font-extrabold text-2xl' : ''}`}>{item}</span></a></li>
+                  :
+                    <li key={item} className={`hidden sm:flex items-center w-8 h-10 text-center bg-zync-100 ${item === currentPage ? 'border-b-2 border-indigo-700' : ''}`}><a className={`inline-flex justify-center items-center w-full h-full`} href="#" onClick={handleCurrentPage}><span className={`inline-flex text-lg leading-none ${item === currentPage ? 'font-extrabold text-2xl' : ''}`}>{item}</span></a></li>
+              ))}
+              {pages > pagOffset &&
+                <>
+                  <li className="flex items-center w-6 sm:w-8 h-10 bg-zync-100">
+                    <a 
+                      className={`inline-flex justify-center items-center w-full h-full ${currentPage === pages ? 'cursor-default text-gray-200' : ''}`} 
+                      href="#" 
+                      id="last"
+                      onClick={handleLastPage}
+                    ><MdLastPage className="w-6 h-6"/></a>
+                  </li>
+                </>
+              }
+              <li className="flex items-center w-6 sm:w-8 h-10 bg-zync-100">
+                <a 
+                  className={`inline-flex justify-center items-center w-full h-full ${currentPage === pages ? 'cursor-default text-gray-200' : ''}`} 
+                  href="#" 
+                  onClick={handleNextPag} 
+                ><MdChevronRight className="w-6 h-6"/></a></li>
+            </ul>
+          </div>
         </div>
-        <ul className="w-full h-fit flex justify-center items-center text-lg select-none mt-12">
-          <li className="bg-gray-200 border border-gray-400 hover:bg-gray-400 flex items-center h-12 rounded-l-lg"><a
-            className={`inline-flex justify-center items-center w-full h-full hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} 
-            href="#" 
-            onClick={handlePrevPag} 
-          ><MdChevronLeft style={{ height: '24px', width: '24px' }} /></a></li>
-          <li className="bg-gray-200 border border-gray-400 hover:bg-gray-400 flex items-center h-12"><a 
-            className={`inline-flex justify-center items-center w-full h-full hover:underline ${currentPage === 1 && 'cursor-default text-gray-400 hover:no-underline'}`} 
-            href="#" 
-            id="first"
-            onClick={handleFirstPage}
-          ><MdFirstPage style={{ height: '24px', width: '24px' }}/></a></li>
-          {paginator.map(item => (
-            pages > pagOffset
-              ?
-                <li key={item} className="bg-gray-200 border border-gray-400 hover:bg-gray-400 text-lg w-8 h-12 text-center"><a className={`inline-flex justify-center items-center w-full h-full ${item === currentPage && 'font-bold'}`} href="#" onClick={handleCurrentPage}>{item}</a></li>
-              :
-                <li key={item} className="bg-gray-200 border border-gray-400 hover:bg-gray-400 text-lg w-8 h-12 text-center"><a className={`inline-flex justify-center items-center w-full h-full ${item === currentPage && 'font-bold'}`} href="#" onClick={handleCurrentPage}>{item}</a></li>
-          ))}
-          {pages > pagOffset &&
-            <>
-              <li className="bg-gray-200 border border-gray-400 hover:bg-gray-400 flex items-center h-12"><a 
-              className={`inline-flex justify-center items-center w-full h-full hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} 
-              href="#" 
-              id="last"
-              onClick={handleLastPage}
-            ><MdLastPage style={{ height: '24px', width: '24px' }} /></a></li>
-            </>
-          }
-          <li className="bg-gray-200 border border-gray-400 hover:bg-gray-400 flex items-center h-12 rounded-r-lg"><a 
-            className={`inline-flex justify-center items-center w-full h-full hover:underline ${currentPage === pages && 'cursor-default text-gray-400 hover:no-underline'}`} 
-            href="#" 
-            onClick={handleNextPag} 
-          ><MdChevronRight style={{ height: '24px', width: '24px' }} /></a></li>
-        </ul>
       </div>
     </>
   )
