@@ -69,7 +69,15 @@ const App = () => {
         <h1 className="w-full text-2xl text-center text-gray-800 font-bold p-4 mb-8 ease-in-out transition-all duration-300">React.JS Paginator</h1>
         <div>
           <div>
-            <div></div>
+            {!!populator && populator.map(item => (
+              <div key={item.id}>
+                <div><img className="w-24 h-auto rounded" src={item.images[0]} alt={item.name} /></div>
+                <div>{item.title}</div>
+                <div>${item.price}</div>
+                <div><p>{item.description}</p></div>
+                <div>{item.category.name}</div>
+              </div>
+            ))}
           </div>
         </div>
         <div className="w-full h-12 flex justify-between items-center border-t border-indigo-300 pt-4 px-4">
